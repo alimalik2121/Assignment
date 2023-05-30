@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body{
+                box-sizing: border-box;
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            h1{
+                margin: 2px;
+            }
+            
+
+            .calculator{
+                width: 240px;
+                margin: 0 auto;
+                padding: 10px;
+                background-color: #f3f3f3;
+                border-radius: 5px;
+                box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            }
+            button{
+                height: 50px;
+                font-weight: bold;
+                font-size: 18px;
+                margin: 5px;
+                flex: 1;
+                border: none;
+                background-color: gray;
+                border-radius: 10px;
+            }
+
+            .output-screen{
+                width: 100%;
+                margin-bottom: 10px;
+                padding: 5px;
+                font-size: 20px;
+                text-align: right;
+            }
+
+            button:hover{
+                background-color: aliceblue;
+            }
+
+            .row{
+                display: flex;
+            }
+        </style>
+    </head>
+    <body>
+        <section class="calculator">
+            <h1>Calculator Using JavaScript</h1>
+            <div class="output-screen" id="output-screen">
+            </div>
+            <div class="operations">
+                <div class="row">
+                    <button button-clear>AC</button>
+                    <button button-operation>+</button>
+                    <button button-operation>-</button>
+                    <button button-operation>*</button>
+                </div>
+                <div class="row">
+                    <button button-operation>/</button>
+                    <button button-operation>sin</button>
+                    <button button-operation>cos</button>
+                    <button button-operation>tan</button>
+                </div>
+            </div>
+            <div class="numerics">
+                <div class="row">
+                    <button button-number>7</button>
+                    <button button-number>9</button>
+                    <button button-number>8</button>
+                </div>
+                <div class="row">
+                    <button button-number>4</button>
+                    <button button-number>5</button>
+                    <button button-number>6</button>
+                </div>
+                <div class="row">
+                    <button button-number>1</button>
+                    <button button-number>2</button>
+                    <button button-number>3</button>
+                </div>
+                <div class="row">
+                    <button style="flex: 1" button-number>0</button>
+                    <button style="flex: 2" button-equals>=</button>
+                </div>
+            </div>
+        </section>
+        <script>
+            var current_number = '', prev_number = '', operation = '';
+
+            const numberButtons = document.querySelectorAll('[button-number]');
+            const operationButtons = document.querySelectorAll('[button-operation]');
+            const equalButton = document.querySelector('[button-equals]');
+            const clearButton = document.querySelector('[button-clear]');
+
+            function appendNumber(number){
+                current_number = current_number.toString() + number.toString();
+            }
+
+            function updateDisplay(prev_number, operation, current_number){
+                document.getElementById('output-screen').innerText = `${prev_number} ${operation} ${current_number}`;
+            }
+
+            function solveEquation(){
+                prev_number = parseFloat(prev_number);
+                current_number = parseFloat(current_number);
+
+                switch(operation){
+                    case '+':
+                        current_number = prev_number + current_number;
+                    break;
+
+                    case '-':
+                        current_number = prev_number - current_number;
+                    break;
+
+                    case '*':
+                        current_number = prev_number * current_number;
+                    break;
+
+                    case '/':
+                        current_number = prev_number / current_number;
+                    break;
+
+                    case 'sin':
+                        current_number = Math.sin(current_number);
+                    break;
+
+                    case 'cos':
+                        current_number = Math.cos(current_number);
+                    break;
+
+                    case 'tan':
+                        current_number = Math.sin(current_number) / Math.cos(current_number);
+                    break;
+                }
+
+            }
+
+            numberButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    appendNumber(button.innerText);
+                    updateDisplay(prev_number, operation, current_number);
+                });
+            })
+
+            operationButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    prev_number = current_number;
+                    current_number = '';
+                    operation=button.innerText;
+                    updateDisplay(prev_number, operation, current_number);
+                })
+            })
+
+            equalButton.addEventListener('click', () => {
+                solveEquation();
+                operation = '';
+                prev_number = '';
+                updateDisplay(prev_number, operation, current_number);
+            })
+            
+            clearButton.addEventListener('click', () => {
+                current_number = '';
+                operation = '';
+                prev_number = '';
+                updateDisplay(prev_number, operation, current_number);
+            })
+
+        </script>
+    </body>
+</html>
